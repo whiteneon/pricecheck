@@ -32,8 +32,7 @@ if ($len > 2) {
 	$rowcount = mysqli_num_rows($result);
 	//$hint = 'SKU'. $sep . 'Desc' . $sep . 'Dept' . $sep . '$KY' . $sep . '$OOS<BR>' . "\n";
 	while (($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) != NULL) {
-		?><html><head><title>Cox Interior SKU Info</title></head><body><a href="/pricecheck/"
-		><img src="cox_small.jpg"></a><BR><?php
+		?><html><head><title>Cox Interior SKU Info</title></head><body><a href="/pricecheck/"><img src="cox_small.jpg"></a><BR><?php
 		//$hint .= $row['SKU'] . $sep . $row['Description'] . $sep . 
 		//$row['Dept'] . $sep . '$' . number_format($row['Price1'], 2, ".", ",") .
 		//$sep . '$' . number_format($row['Price5'], 2, ".", ",") . "<BR>\n";
@@ -60,6 +59,6 @@ if ($len > 2) {
 } else {
 	
 }
-echo $hint === "" ? "Invalid SKU" : $hint;
+echo $hint === "" ? "Invalid SKU/ or SKU not in store" : $hint;
 
 ?>

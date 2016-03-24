@@ -38,8 +38,13 @@ if (isset($_REQUEST['username'])) {
 }
 ?>
 
-<HTML><HEAD><TITLE>Cox Interior Login Page</TITLE></HEAD><BODY>
-<center><img src="cox_small.jpg"></center>
+<HTML><HEAD>
+<style>
+	h1 {
+    	text-align: center;
+	}
+</style><TITLE>Cox Interior Login Page</TITLE></HEAD><BODY>
+<h1><img src="cox_small.jpg"></h1>
 <form action="login.php" method="post">
 Username: <input type="text" name="username"><BR>
 Password: <input type="password" name="password"><BR>
