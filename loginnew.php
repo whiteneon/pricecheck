@@ -18,7 +18,7 @@ if (isset($_REQUEST['username'])) {
 			}
 		</style>
 		<TITLE>Cox Interior Login Page</TITLE></HEAD><BODY>
-		<h1><img src="cox_small.jpg"></h1>
+		<h1><img src="cox_small.jpg"></h1><BR><?php //echo getcwd(); ?>
 		<form action="loginnew.php" method="post">
 		Username: <input type="text" name="username"><BR>
 		Password: <input type="password" name="password"><BR>
@@ -49,6 +49,9 @@ if (isset($_REQUEST['username'])) {
 			setcookie('loggedin', $setstores, strtotime( '+90 days'));
 			setcookie('name', $dbname, strtotime( '+90 days'));
 			header("Location: /pricecheck/index.php");
+			$myfile = fopen(getcwd() . "/logins.txt", "a");
+			fwrite($myfile, date(DATE_ATOM) . " - " . $dbun . "\n");
+			fclose($myfile);
 			die();
 		}		
 	}
