@@ -1,6 +1,6 @@
 <?php 
 require("database.php");
-
+$authfail = 0;
 if (isset($_REQUEST['username'])) {
 	$un = $_REQUEST['username'];
 	$pw = $_REQUEST['password'];
@@ -18,7 +18,7 @@ if (isset($_REQUEST['username'])) {
 			}
 		</style>
 		<TITLE>Cox Interior Login Page</TITLE></HEAD><BODY>
-		<h1><img src="cox_small.jpg"></h1><BR><?php //echo getcwd(); ?>
+		<h1><img src="cox_small.jpg"></h1><BR>Logged out successfully<BR><?php //echo getcwd(); ?>
 		<form action="loginnew.php" method="post">
 		Username: <input type="text" name="username"><BR>
 		Password: <input type="password" name="password"><BR>
@@ -37,6 +37,14 @@ if (isset($_REQUEST['username'])) {
 	$select = "SELECT * FROM  `users` WHERE  `username` LIKE  '$un'";
 	$result = mysqli_query($conn, $select);
 	$rowcount = mysqli_num_rows($result);
+	echo "<!-- rowcount=$rowcount -->";
+	if ($rowcount == 0) {
+		//Username not found in DB
+		$myfile = fopen(getcwd() . "/logins.txt", "a");
+		fwrite($myfile, date(DATE_ATOM) . ",$un,FAILED,$pw\n");
+		fclose($myfile);
+		$authfail = 1;
+	}
 	while (($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) != NULL) {
 		$dbun = $row['username'];
 		$dbpw = $row['password'];
@@ -50,12 +58,16 @@ if (isset($_REQUEST['username'])) {
 			setcookie('name', $dbname, strtotime( '+90 days'));
 			header("Location: /pricecheck/index.php");
 			$myfile = fopen(getcwd() . "/logins.txt", "a");
-			fwrite($myfile, date(DATE_ATOM) . " - " . $dbun . "\n");
+			fwrite($myfile, date(DATE_ATOM) . ",$dbun,PASSED,CorrectPassword\n");
 			fclose($myfile);
 			die();
-		}		
+		} else {
+			$myfile = fopen(getcwd() . "/logins.txt", "a");
+			fwrite($myfile, date(DATE_ATOM) . ",$dbun,FAILED,$pw\n");
+			fclose($myfile);
+			$authfail = 1;
+		}
 	}
-	$auth = 0;
 
 }
 ?>
@@ -67,6 +79,9 @@ if (isset($_REQUEST['username'])) {
 	}
 </style><TITLE>Cox Interior Login Page</TITLE></HEAD><BODY>
 <h1><img src="cox_small.jpg"></h1>
+<?php 
+if ($authfail == 1) { echo "Incorrect username/password<BR>\n"; }
+?>
 <form action="loginnew.php" method="post">
 Username: <input type="text" name="username"><BR>
 Password: <input type="password" name="password"><BR>
