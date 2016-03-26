@@ -4,6 +4,9 @@ require 'database.php';
 if (!$conn) {
 	die('Could not connect to MySQL: ' . mysqli_connect_error());
 }
+$SURL = $_SERVER["SERVER_NAME"];
+$RURL = $_SERVER["REQUEST_URI"];
+$page = "http://$SURL$RURL";
 $store = $_COOKIE['setstore'];
 $q = $_REQUEST["q"];
 $len = strlen($q);
@@ -11,8 +14,8 @@ $hint = "";
 $sep = "--------";
 if ($len > 2) {
 	$q = strtoupper($q);
-	$ref = 'http://wo.coxinterior.com/pricecheck/showdetail.php?sku=';
-
+	//$ref = 'http://wo.coxinterior.com/pricecheck/showdetail.php?sku=';
+	$ref = "http://$SURL/pricecheck/showdetail.php?sku=";
 	$select = "SELECT * FROM  `parts` WHERE  `Description` LIKE  '%$q%' AND `Store` = '1'";
 
 	$result = mysqli_query($conn, $select);

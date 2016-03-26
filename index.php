@@ -42,7 +42,11 @@ function showHint(str) {
 </script>
 </head>
 <body>
-<!-- <?php echo "cookie store is set to: $store"; ?> -->
+<!-- 
+<?php 
+echo "cookie store is set to: $store\n";
+?>
+ -->
 <img src="cox_small.jpg">
 <p><b><?php echo $name; ?>, Start typing a SKU below, <BR>
 press enter if you want details on a full SKU:</b></p>
