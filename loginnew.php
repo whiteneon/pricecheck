@@ -8,6 +8,7 @@ if (isset($_REQUEST['username'])) {
 	echo "<!-- $un -->\n";
 	if ($un == "logout") {
 		setcookie('loggedin','',1);
+		setcookie('prices','',1);
 		echo "<!-- Logged Out-->";
 		?>
 		
@@ -48,6 +49,7 @@ if (isset($_REQUEST['username'])) {
 	while (($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) != NULL) {
 		$dbun = $row['username'];
 		$dbpw = $row['password'];
+		$dbprice = $row['prices'];
 		$dbname = $row['name'];
 		//echo "<!-- pw    = $md5pw -->\n";
 		//echo "<!-- pw    = 098f6bcd4621d373cade4e832627b4f6 -->\n";
@@ -56,6 +58,7 @@ if (isset($_REQUEST['username'])) {
 			$setstores = $row['stores'];
 			setcookie('loggedin', $setstores, strtotime( '+90 days'));
 			setcookie('name', $dbname, strtotime( '+90 days'));
+			setcookie('prices', $dbprice,strtotime( '+90 days'));
 			header("Location: /pricecheck/index.php");
 			$myfile = fopen(getcwd() . "/logins.txt", "a");
 			fwrite($myfile, date(DATE_ATOM) . ",$dbun,PASSED,CorrectPassword\n");

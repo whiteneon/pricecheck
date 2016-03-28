@@ -7,7 +7,7 @@ if(!isset($_COOKIE['loggedin'])) {
 	die();
 } else {
 	echo "<!-- Logged in -->";
-	$pricematrix = $_COOKIE['loggedin'];
+	$pricematrix = $_COOKIE['prices'][0];
 	$name = $_COOKIE['name'];
 }
 
