@@ -15,6 +15,7 @@ require("database.php");
 if (!$conn) {
 	die('Could not connect to MySQL: ' . mysqli_connect_error());
 }
+$un = $name;
 $sku = $_REQUEST["sku"];
 $store = $_REQUEST["store"];
 include "storename.php";
@@ -23,16 +24,18 @@ $hint = "";
 $sep = "---";
 if ($len > 2) {
 	$sku = strtoupper($sku);
-	
+	?><html><head><title>Cox Interior SKU Info</title></head><?php
 
 	$select = "SELECT * FROM  `parts` WHERE  `SKU` LIKE  '$sku' AND `Store` = '$store'";
-
+	echo "<!-- including file now -->";
+	include('logaccess.php');
+	echo "<!-- file included, running query -->";
 	$result = mysqli_query($conn, $select);
 	//$end_time = microtime();
 	$rowcount = mysqli_num_rows($result);
 	//$hint = 'SKU'. $sep . 'Desc' . $sep . 'Dept' . $sep . '$KY' . $sep . '$OOS<BR>' . "\n";
 	while (($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) != NULL) {
-		?><html><head><title>Cox Interior SKU Info</title></head><body><a href="/pricecheck/"><img src="cox_small.jpg"></a><BR><?php
+		?><body><a href="/pricecheck/"><img src="cox_small.jpg"></a><BR><?php
 		//$hint .= $row['SKU'] . $sep . $row['Description'] . $sep . 
 		//$row['Dept'] . $sep . '$' . number_format($row['Price1'], 2, ".", ",") .
 		//$sep . '$' . number_format($row['Price5'], 2, ".", ",") . "<BR>\n";
@@ -59,6 +62,6 @@ if ($len > 2) {
 } else {
 	
 }
-echo $hint === "" ? "Invalid SKU/ or SKU not in store" : $hint;
+echo $hint === "" ? "Invalid SKU or SKU not in store" : $hint;
 
 ?>

@@ -41,10 +41,11 @@ if (isset($_REQUEST['username'])) {
 	echo "<!-- rowcount=$rowcount -->";
 	if ($rowcount == 0) {
 		//Username not found in DB
+		$authfail = 1;
+		include('log_login.php');
 		$myfile = fopen(getcwd() . "/logins.txt", "a");
 		fwrite($myfile, date(DATE_ATOM) . ",$un,FAILED,$pw\n");
 		fclose($myfile);
-		$authfail = 1;
 	}
 	while (($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) != NULL) {
 		$dbun = $row['username'];
@@ -55,6 +56,7 @@ if (isset($_REQUEST['username'])) {
 		//echo "<!-- pw    = 098f6bcd4621d373cade4e832627b4f6 -->\n";
 		//echo "<!-- $dbpw = $dbpw -->\n";
 		if ($dbpw == $md5pw) {
+			$authfail = 0;
 			$setstores = $row['stores'];
 			setcookie('loggedin', $setstores, strtotime( '+90 days'));
 			setcookie('name', $dbname, strtotime( '+90 days'));
@@ -63,12 +65,14 @@ if (isset($_REQUEST['username'])) {
 			$myfile = fopen(getcwd() . "/logins.txt", "a");
 			fwrite($myfile, date(DATE_ATOM) . ",$dbun,PASSED,CorrectPassword\n");
 			fclose($myfile);
+			include('log_login.php');
 			die();
 		} else {
+			$authfail = 1;
 			$myfile = fopen(getcwd() . "/logins.txt", "a");
 			fwrite($myfile, date(DATE_ATOM) . ",$dbun,FAILED,$pw\n");
 			fclose($myfile);
-			$authfail = 1;
+			include('log_login.php');
 		}
 	}
 
